@@ -1,0 +1,308 @@
+---
+title: "Funciones"
+author: "Arturo Pérez"
+output: pdf_document
+---
+## 1. Características generales de una función.
+Las funciones representan uno de los aspectos más poderosos en programación, se trata de la transición entre usuario y programador.
+
+Las funciones se crea utlizando el comando `function()` y se compone de las siguientes partes:
+
+     1. Nombre de la función
+     2. Argumentos
+     3. Cuerpo de la función
+     
+     x <- function(<argumentos>){
+          ## Cuerpo de la función
+     } 
+```{r}
+soyunafuncion <- function(x,y){
+     x+y
+}
+soyunafuncion(10000, 40000)
+
+soyunafuncion <- function(x,y=10){
+     result <- x+y
+     print(result)
+}
+soyunafuncion(10)
+```
+
+Las funciones son objetos de primera clase y pertenecen a la clase de objetos "function", nosotros podemos diseñar las funciones para que puedan hacer lo que nosotros queramos. 
+
+Pueden ser pasadas como argumentos a otras funciones 
+
+Pueden anidarse, es decir, meter una función dentro de otra función.
+
+El valor regresado de una función es la última expresión en el cuerpo del código de la misma. 
+
+## 2. Argumentos
+### Argumentos formales
+
+Son los argumentos incluidos cuando definimos una función.
+
+Las funciones tienen varios argumentos, dentro de los cuales podemos encontrar argumentos nombrados con valores por default. No todas las funciones hacen uso de todos sus argumentos formales. Por ejemplo, una función con 10 argumentos puede tener valores especificados o nosotros debemos especificarlos (forzosamente, si no la función no hace nada). Para ver los argumentos de una función podemos hacer uso de los comandos `str()` o `formals()` 
+```{r}
+formals(rnorm)
+str(rnorm)
+```
+
+### argument matching
+
+Los argumentos de las funciones pueden unirse por su posición o por el nombre, por ejemplo.
+```{r}
+## por posición
+set.seed(1)
+rnorm(5, 3, 2)
+
+##por nombre
+set.seed(1)
+rnorm(n=5, mean = 3, sd = 2)
+
+##No recomendado invertir el orden de los args. 
+set.seed(1)
+rnorm(mean = 3, 5,2)
+```
+
+Cuando tenemos muchos argumentos, podemos mezclar el posicionamiento por nombre y por posición. 
+```{r eval=FALSE}
+##equivalentes
+str(lm)
+lm(data = mydata, x~y, model = FALSE, 1:100)
+lm(x~y, mydata, 1:100, model = FALSE) ##personalmente me gusta más este.
+```
+
+No es necesario especificar todo el tiempo, a menos que sea necesario o nos sea más cómodo. Por lo general, queremos nombrar los argumentos cuando tenemos una gran lista de estos y queremos modificar su valor por default a otro, además es útil escribirlos si sabes el nombre de los argumentos, pero no su posición en la lista. 
+
+### Matching parcial
+
+Cuando especificamos una parte del argumento, R une y le asigna el valor correcto
+```{r}
+set.seed(1)
+rnorm(10, m = 4,  1)
+```
+
+Entonces tenemos 3 tipos de match para los argumentos
+
+     1) Match exacto (por nombre)
+     2) Match parcial (por nombre, pero sin mencionar
+                         Todo el argumento)
+     3) Match por posición
+     
+### definiendo una función
+
+En los argumentos definimos cuando tiene y cuando no tiene un valor por default un argumento
+
+a: No tiene valor por default (nosotros lo definimos)
+b, c, d: Si tienen un valor por default.
+     
+     NULL: Valor para un argumento que indica que no hay
+           Un valor específico
+```{r}
+f <- function(a,b=1,c=2,d=NULL){}
+```
+
+### Evaluación perezosa
+
+Implica que los argumentos de una función serán evaluados sólo si se necesitan. 
+```{r}
+f <- function(a, b){
+     a^2
+}
+f(2)
+
+##Sin embargo
+f <- function(a, b){
+     x <- a^2
+     y <- b^3
+    c(x,y)
+}
+f(2)
+```
+
+### El argumento "..."
+
+**...** indica un numero variable de argumentos que son pasados a otras funciones, es decir, extendemos los argumentos de nuestra función con los argumentos de otra función.
+```{r}
+fun <- function(x, y, ...){
+     plot(x,y, ...)
+}
+
+```
+Se replican los argumentos de la función plot, no hay necesidad de escribirlos todos. 
+
+Otra función del argumento **...** se utiliza cuando un cierto número de argumentos que queremos pasar a la función no se pueden conocer por adelantado. Son objetos no definidos que son concatenados.
+
+Por ejemplo:
+```{r}
+args(data.frame)
+args(rbind)
+args(paste)
+```
+
+En esta ocasión **TODOS** los argumentos que vengan después de **...** deben ser nombrados explicitamente y no pueden tener match parcial.
+```{r}
+paste("a", "b", "c", sep = ":")
+paste("a", "b", "c", se = ":")
+
+```
+## 3 Reglas de ámbito
+### Symbol binding
+¿Cómo sabe R qué valor asignar a qué símbolo cuando escribo una función?
+```{r}
+lm <- function(x){x+x}
+```
+
+Cuando R intenta unir valores a un símbolo, busca a través de una serie de entornos para encontrar el valor apropiado.
+
+**Entorno**: Es una colección de objetos y valores o símbolos y valores.
+
+Esta búsqueda tiene un orden. Por ejemplo, cuando buscamos un objeto en R, este lo busca en el entorno global por nombre y símbolo, haciendo el match que buscamos, si el objeto no está ahí, entonces lo busca en los diferentes paquetes de R en este caso el paquete *stats*, si este no está ahi, lo busca en el paquete *graphics* y así sucesivamente hasta llegar al paquete *base*. Sin embargo, no hay que asumir que el programa tiene todo lo que necesitamos.
+
+Cargar un paquete con `library()` hace que este paquete quede en la posición 2 de búsqueda moviendo un lugar al resto de paquetes.
+```{r}
+library(rafalib)
+```
+
+
+Sin miedo al éxito nosotros podemos nombrar un objeto llamado **sd** y al mismo tiempo una función que se llame **sd()** y uno no interferirá con el funcionamiento del otro.
+```{r}
+mean <- function(mean, otro){
+     y <- otro+mean
+     mean(y)
+}
+
+desviacion(4,5)
+```
+
+
+### Reglas de ámbito
+Lo que hacen es determinar cómo un valor se asocia con una variable libre en una función. En la siguiente función tenemos que hay 2 argumentos formales y uno libre.
+```{r, eval=FALSE}
+f <- function(x,y){
+     x^2 + y/z
+}
+```
+
+
+     FUNCION: 2 Tipos de variables.
+               -Argumentos
+               -Simbolos u objetos que no forman
+                parte de la función (variable libre).
+
+¿Entonces cómo asigno un valor a esos símbolos?
+Hay dos formas: utilizando las reglas de *ámbito léxico* y las reglas de *ámbito dinámico*
+
+**Reglas de ámbito léxico**
+
+Esta regla nos dice que *"los valores de variables libres serán buscados en el entorno en el cual la función fue definida"*
+
+        Entorno: Colección de pares (símbolos asociados a un valor)
+
+Cada paquete en R tiene un nombre y un entorno asociado.
+
+Las funciones en R están asociadas a un entorno entonces, para buscar una variable libre:
+
+        1. Si el valor de un símbolo no está en el entorno 
+           donde la función fue creada, la búsqueda continua
+           con el entorno "padre".
+        2. Esto se vuelve escalonado, hasta llegar al nivel
+           top de entornos padre.
+                
+                TOP: global enviroment.
+Si esta búsqueda fracasa, se marca un error.
+
+```{r}
+makepower <- function(n){
+        pow <- function(x){
+                x^n
+        }
+        pow
+}
+
+cube <- makepower(3)
+cube(2)
+square <- makepower(2)
+square(4)
+```
+
+Lexico y dinámico
+```{r}
+y <- 10
+f <- function(x){ ##ambito léxico
+        y <- 2
+        y^2+g
+}
+g <- function(x){ ##ámbito dinámico
+        x*y
+}
+```
+
+Cuando una función es definida en el entorno global y es subsecuentemente llamado de este entorno, el entorno de definición y el entorno de llamada es el mismo y da apariencia de ámbito dinámico
+```{r}
+g <- function(x){
+        a <- 3
+        x+a+y
+}
+y <- 3
+g(2)
+```
+
+## 4. Funciones de repetición
+### lapply
+Argumentos: list, función, ... (argumentos de la función)
+```{r}
+lapply(as.list(na.omit(airquality)), quantile, probs=c(.5,.90))
+quantile(na.omit(airquality$Ozone), probs = c(.4,.2))
+```
+
+### sapply
+Argumentos: Los mismos que lapply.
+```{r}
+sapply(as.list(na.omit(airquality)), quantile, probs=c(.5,.90))
+```
+
+### apply
+Argumentos: x(matriz, data frame o arreglo con 2 o más dimensiones), margin, fun, ...
+```{r}
+data <- na.omit(airquality)
+apply(data,2, sd)
+```
+
+### mapply
+aplica una función en paralelo sobre un set de argumentos de esta función.
+Argumentos: FUN, ...(argumentos de la función), MoreArgs, SIMPLIFY.
+```{r}
+mapply(rep, 1:4, 4:1)
+rep(1:4, each=4:1)
+ruido <- function(n, mean, sd){
+        rnorm(n, mean, sd)
+}
+ruido(1:5,1:5,2)
+mapply(ruido, 1:5, 1:5, 2)
+```
+
+### tapply
+Aplica una función a un vector dividido según una variable categórica del mismo largo del vector que nos indique qué valor corresponde a cada grupo.
+Argumentos: x(vector), index (var. categorica), FUN, ..., simplify
+```{r}
+tapply(data$Temp, factor(data$Month), mean)
+```
+
+### Split
+Se utiliza en conjunción con otras funciones como lappy o sapply
+Argumentos: x(vector, lista o data.frame),f(factor o lista de factores), drop.
+```{r}
+splitdata <- split(data, factor(data$Month,
+                              labels = c("mayo", "junio", "julio", "agosto", "septiembre")))
+
+sapply(splitdata, colMeans)
+lapply(splitdata, colMeans)
+```
+
+### Funciones anónimas.
+```{r}
+
+lapply(splitdata[c("mayo", "junio", "julio")], function(x) colMeans(x[,c("Ozone", "Wind", "Temp")]))
+```
+

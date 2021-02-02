@@ -1,0 +1,1 @@
+{"frames":[{"character_number":0,"end_character_number":0,"end_line_number":0,"file":"","func":"f(2)","line_number":0}],"message":"Error in f(2) : el argumento \"b\" está ausente, sin valor por omisión\n"}

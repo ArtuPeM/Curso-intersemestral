@@ -1,0 +1,528 @@
+---
+title: "Introducción a R"
+author: "Arturo Pérez"
+date: "29/1/2021"
+output: pdf_document
+---
+## 1. Conociendo la interfaz
+1. Editor de código fuente
+2. Consola
+3. Historial y ambiente de trabajo
+4. Ventana de archivos, gráficas, paquetes, ayuda, etc.
+
+Diferencias con la interfaz de R: Es más ordenada y es más cómodo trabajar desde RStudio.
+
+### Iniciando un proyecto en RStudio
+1. File/New Project.
+2. Símbolo de "create project"
+3. Click en nombre del proyecto y click en new project
+
+## 2. Instalando paquetes
+### CRAN
+`install.packages("ggplot2")`
+`library(ggplot2)`
+
+### GitHub
+`install.packages("devtools")`
+`library(devtools)`
+`install_github("author/package")` #github username/ nombre del paquete
+
+### Bioconductor
+`install.packages("biocmanager")`
+`library(biocmanager)`
+`install("nombre del paquete")`
+
+## 3. Clases y tipos de objetos
+Todo lo que se manipula en R son objetos con diferentes tipos (o clases) de datos.
+
+### Console input
+```{r}
+x <- 2+2
+print(x)
+x
+msg <- "Intersemestral de R"
+msg
+```
+
+Las 5 clases atómicas de los objetos en R son las siguientes:
+     
+1. Caracter
+```{r}
+x <- "hola" ##cualquier cosa
+class(x)
+```
+
+2. Numérico
+```{r}
+y <- 3.14
+class(y)
+```
+
+3. Integrer (números enteros)
+```{r}
+y <- 1:3 
+t <-  4L
+class(y)
+class(t)
+```
+
+4. Complejo
+```{r}
+x <- 1+3i
+class(x)
+```
+
+5. Logico(TRUE/FALSE)
+```{r}
+z <- 0>1
+z
+class(z)
+```
+
+### Atributos de los objetos
+Pueden formar parte de los objetos en R
+1. Nombres, nombres de dimensiones
+2. dimensiones (p.e matrices o tablas de datos)
+3. Class (todos los objetos pertenecen a una clase)
+4. Lenght (largo del objeto o comunmente vectores)
+5. otros
+
+`attributes()` : Permite acceder a los atributos de un objeto en R.
+```{r}
+x <- 1
+names(x) <- "juan"
+attributes(x)
+x
+```
+
+## 4. Vectores y listas
+### Vectores
+
+Son el objeto más básico en R.
+Se crean utilizando las siguientes funciones
+
+`c()`: Concatena una serie de objetos
+```{r}
+x <- c(1,2,3,4,5,6,7,8,9,10)
+class(x)
+```
+
+`vector()`: Crea un vector de cierto tipo y cierto largo
+```{r}
+y <- vector("numeric", 10)
+z <- vector("logical", 10)
+y
+```
+
+En un vector únicamente se pueden almacenar objetos de una misma clase. Cuando intentamos combinar objetos de diferentes clases, todos los objetos dentro del vector se vuelven de una misma clase según el denominador menos común
+```{r}
+class(c(1.7, "a"))
+class(c(TRUE, 2))
+class(c("a", TRUE))
+```
+
+
+### Coerción específica
+Los objetos pueden cambiar de clase usando al función `as.`
+```{r}
+x <- c(0,1,2,3,4,5,6)
+class(x)
+x <- as.logical(x)
+x
+class(x)
+x <- as.character(x)
+x
+class(x)
+##NO SIEMPRE FUNCIONA
+x <- c("a", "b", "c")
+as.numeric(x)
+```
+
+### listas
+
+Son un tipo de vector con elementos de distintas clases
+```{r}
+y <- list(1:3, "a", 3)
+y
+```
+
+varios elementos en diferentes listas
+```{r}
+c <- list(c(1:4), c("a", "d", "v"))
+c
+class(c)
+```
+
+## 5. Matrices y tablas de datos
+### Matrices
+Las matrices son otros de los tantos tipos de objetos que existen en R. Se crean utilizando la función `matrix()`
+```{r}
+m <- matrix(c(1,4,5,7,4,0), nrow = 2, ncol= 3)
+m
+```
+
+Creando matrices utilizando un vector con la función `dim()`
+```{r}
+m <- 1:10
+dim(m) <- c(2,5)
+m
+```
+Creando matrices uniendo vectores con las funciones 
+`cbind()`
+`rbind()`
+```{r}
+x <- 1:3
+y <- 10:12
+matriz1 <- cbind(x,y) #datos en diferentes columnas
+matriz2 <- rbind(x,y) #datos en diferentes filas
+```
+
+### Tablas de datos ("DATA.FRAMES")
+Las tablas de datos son el objeto clave utilizado en R donde se almacena información tabulares.
+Se representan como un tipo especial de lista donde *cada elemento de la lista tiene el mismo largo*:
+
+     -Columnas: Es el elemento
+     -Filas: Es el largo de la lista.
+
+Las columnas no precisamente tienen que ser de la misma clase (principal diferencia con una matriz). Las columnas guardan diferentes clases de objetos en cada columna.
+
+**Atributos de las tablas de datos**
+
+Nombre de las filas y las columnas. `rownames()` y `colnames()`
+```{r}
+## FILAS
+data <- mtcars
+head(rownames(data))
+head(data)
+data2 <- airquality
+head(rownames(data2))
+head(data2)
+## COLUMNAS
+names(data)
+colnames(data)
+```
+
+Se puede crear una matriz de una tabla de datos con la función `data.matrix()` o con la función `as.matrix()`. Sin embargo, los elementos dentro de las tablas se verán forzados a convertirse a elementos de una misma clase.
+```{r}
+x <- data.matrix(data)
+head(x)
+class(x)
+y <- airquality
+y <- as.matrix(y)
+head(y)
+class(y)
+```
+
+**crear una tabla de datos**
+
+Se crean utilizando la función `data.frame()` y cada columna representaría un vector con objetos de una misma clase. 
+```{r}
+z <- data.frame(columna1=1:10, 
+                variable2=c(T,T,F,T,F,T,T,T,T,F))
+z
+nrow(z)
+ncol(z)
+```
+
+### Otros objetos dentro de una tabla de datos
+Como ya vimos, dentro de una tabla de datos podemos almacenar diferentes clases de objetos, sin embargo, existen objetos particulares dentro de las tablas, los factores y los valores perdidos.
+
+**factores**
+Se trata de un tipo especial de vector para expresar datos categóricos. Muy útiles para crear grupos. Es mucho mejor que utilizar vectores **integrers** porque los factores se autodescriben. P.E, es mejor tener *macho* y *hembra* que *1* y *2*.
+
+Se crean con la función `factor()`.
+```{r}
+x <- factor(c("macho", "hembra", "hembra", "hembra", "macho"))
+table(x)
+class(x)
+```
+
+Quitar la clase del vector.
+```{r}
+unclass(x)
+```
+
+El orden de los niveles de los factores se puede establecer utilizando el argumento `levels` dentro de la función `factor()`. P.E en modelos lineales el primer nivel puede ser la línea base.
+```{r}
+x <- factor(x, levels = c("macho", "hembra"))
+x
+```
+
+Sin embargo, supongamos que en el data frame tenemos dos grupos indicados como 1 y 2 para hombres y mujeres, entonces hacemos uso del argumento `labels` para ponerle nombre a cada uno de los grupos.
+```{r}
+x <- c(rep(c(1,2), each= 10))
+x
+x <- factor(x, labels = c("mujeres", "hombres"))
+x
+```
+
+**valores perdidos**
+En R son denominados como **NA** o **NaN**.
+
+`is.na()` se utiliza para ver si hay valores perdidos o faltantes en un objeto
+
+`is.nan()` evalua NaN, es decir cuando tenemos una operación aritmética indefinida o sin sentido 
+
+los valores **NA** también tienen una clase:
+Integrer NA, character NA, numeric NA, etc.
+
+Un valor NaN es un valor NA, es decir, puede haber un valor NaN perdido y te sale NA, sin embargo al inverso no es posible
+
+```{r}
+x <- c(1,2,NA,NA,NA,NA,3,4,5,6)
+is.na(x)
+is.nan(x)
+
+x <- c(1,2,NaN,NaN,NA,NA,3,4,5,6)
+is.na(x)
+is.nan(x)
+```
+
+### Atributo "NOMBRES"
+Como vimos anteriormente, podemos nombrar objetos en R. Esto facilita la lectura del código porque de esta forma, los objetos se autodescriben. Se utiliza la función `names()` para asignarle nombre a los objetos
+```{r}
+x <- 1:3
+names(x)
+names(x) <- c("objeto", "cosa", "item")
+x
+names(x)
+```
+
+Las listas también pueden tener nombres
+```{r}
+x <- list(a=1:5, b=c(3,4,5,6,7), c=c("a", "b", "c", "d", "f"))
+x
+```
+
+También se pueden asignar nombres a las matrices y tablas de datos con las funciones `dimnames()`,`rownames()`,`colnames()`.
+```{r}
+m <- matrix(sample(1:5),nrow = 6, ncol = 5)
+m
+dimnames(m) <- list(c("a","b","c", "d", "e", "f"), c("col1", "col2", "col3", "col4", "col5"))
+m
+## añadir nombres utilizando las otras dos funciones
+m <- matrix(rnorm(30), nrow = 6, ncol = 5)
+m
+rownames(m) <- c("a","b","c", "d", "e", "f")
+m
+colnames(m) <- c("col1", "col2", "col3", "col4", "col5")
+m
+```
+
+## 6. Leyendo y descargando tablas
+### Descargando archivos
+Si queremos analizar alguna tabla de datos que esté dentro de una base de datos pública, podemos utilizar código en R para descargar el archivo sin necesidad de buscar la tabla y moverla manualmente a nuestro directorio. Para ello, etableceremos una serie de pasos a seguir para que todo te resulte mucho más sencillo.
+
+**1. verifica que estás en el directorio correcto de tu proyecto**
+Para esto haremos uso de las funciones `getwd()` y `setwd()`
+
+```
+getwd() ##nos dice donde estamos
+setwd("./data") ##nos movemos a otro lugar
+setwd("../") ##nos movemos una carpeta arriba.
+```
+**2. Crear un directorio en donde colocaremos nuestras tablas de datos descargadas**
+Esto es más que nada para mantener limpieza dentro de nuestro directorio del proyecto. Se hace uso de la función `dir.create()`
+```{r}
+if(!file.exists("covid")){
+     dir.create("covid")
+}
+```
+
+**3. Obtener datos en línea**
+Para esto haremos uso de la función `download.file()`. Parametros importantes: URL, destfile, method. Cuando tenemos un archivo *ZIP*
+```{r eval=FALSE}
+url <- "http://datosabiertos.salud.gob.mx/gobmx/salud/datos_abiertos/historicos/2021/01/datos_abiertos_covid19_28.01.2021.zip"
+download.file(url, destfile = "./covid/mexicocovid19.zip")
+unzip("./covid/mexicocovid19.zip")
+```
+
+Si Se tratara de un archivo *csv* el código sería de la siguiente forma
+```{r eval=FALSE}
+url2 <- "https://datos.cdmx.gob.mx/dataset/9c45ead6-9016-469a-b6ba-41e3660590cb/resource/c97a1898-5343-4b01-8d76-9f74e5b0d072/download/capacidad-hospitalaria_micrositio-base_micrositio.csv"
+download.file(url2, destfile = "./covid/capacidadcovid19CDMX.csv")
+```
+
+De igual forma, si se trata de un archivo tipo excel, se guarda como *./directorio/nombredelarchivo.xlsx*
+
+### Leyendo tablas de datos en R
+Existen varias formas de leer archivos en R. En este caso nos enfocaremos en 3. La primera implica el uso de las funciones `read.csv()` y `read.table()` que se encuentran en el R base, mientras que la otra implica el uso del paquete *xlsx* para leer tablas en documentos de excel.
+
+**read.table() y read.csv()**
+
+`read.table()` nos permite leer archivos en formatos planos como el *csv* o *txt*. Esta función para leer tablas grandes (big data) causa problemas.
+
+parametros importantes: *na.strings*, *skip*, *stringsAsFactors*, *quote*
+
+```{r}
+data1 <- read.table("./covid/capacidadcovid19CDMX.csv", sep = ",", header = TRUE)
+head(data1)
+```
+
+`read.csv()` nos permite leer únicamente archivos en formato csv.
+```{r}
+data2 <- read.csv("./covid/capacidadcovid19CDMX.csv", stringsAsFactors = TRUE)
+```
+
+Para leer archivos de excel, hacemos uso del paquete *xlsx* y utilizamos la función `read.xlsx()`.
+Parametros importantes: *sheetIndex*,*header*,*colindex*,*rowindex*.
+```{r eval = FALSE}
+library(xlsx)
+read.xlsx("nombre del documento.xlsx", sheetIndex = 2 , header = TRUE, rowIndex = 1:50, colIndex = 1:5)
+```
+
+### Convirtiendo tablas en archivos
+Una vez que tengamos una tabla que hayamos creado nosotros podemos guardarla en diferentes formatos utilizando los comandos `write.table()`,`write.xlsx()`.
+```{r eval=FALSE}
+##csv
+write.table(x, file = "nombre del archivo.csv", sep = ",")
+##txt
+write.table(x, file = "nombre del archivo.txt", row.names = FALSE)
+##xlsx
+library(xlsx)
+xlsx::write.xlsx()
+```
+
+## 7. Extracción de información
+### Operadores básicos para extraer trozos de información de objetos en R
+**[]**
+El corchete lo que hace es regresarnos un objeto de la misma clase que el objeto original, es decir, si extraes información de un vector, tendrás de regreso otro vector, si es una lista, obtendrás de regreso otra lista. Puede ser utilizado para seleccionar más de un elemento dentro de un objeto. 
+
+**[[]]**
+Doble corchete se utiliza para extraer generalmente elementos de una lista o tabla de datos. Extrae un elemento y la clase no necesariamente tiene que ser de la misma del objeto original.
+
+**$**
+Extrae elementos de una lista o dataframe utilizando el nombre del elemento a extraer, puede o no ser de la misma clase que el objeto original
+
+**extrayendo de un vector**
+```{r}
+x <- rnorm(100, 2,4)
+x[3]
+x[1:10] ## una serie de elementos
+x[c(3,5,8,9,15)] ## elementos específicos
+y <- c("a","r","t","g","e","d","j","ñ")
+y[5]
+y[y>"a"]
+z <- y>"a" ## ojo, no son lo mismo
+y[z]
+```
+**Extrayendo de una lista**
+Podemos utilizar los 3 operadores anteriormente mencionados para extraer elementos de una lista. Podemos extraer por nombre o por número de elemento de la lista.
+```{r}
+lista <- list(data=matrix(1:30, 6, 5), matriz=head(as.matrix(airquality), 20), vector1=rnorm(10))
+head(lista,)
+lista["data"]
+lista[["matriz"]]
+lista$vector1
+lista[c(1,3)]
+
+##sinónimos
+lista[[c(3,5)]]
+lista[[3]][[5]]
+lista[[3]][5]
+lista$vector1[5]
+
+##concordancia parcial
+lista$d
+lista[["d", exact=FALSE]]
+
+```
+
+**extrayendo de una matriz o tabla de datos**
+Podemos extraer información de las tablas de datos utilizando los siguientes subíndices [i,j] donde i = filas y j = columnas
+```{r}
+data1[1,3]
+data1[1,]
+data[c(3,5,7), 1:3]
+## Columnas
+head(data1[,3])
+head(data1$Estatus_capacidad_UCI)
+head(data1[data1$Estatus_capacidad_UCI == "BUENA",])
+```
+### Extrayendo y eliminando valores perdidos
+Por lo general queremos eliminar aquellos valores NA que en realidad no aportan información a nuestra tabla. Por lo que existen muchas formas de identificar y eliminar valores perdidos en una tabla de datos, matriz o un vector.
+
+1. Primero identificamos si existen valores perdidos, utilizando las funciones `is.na()`, `complete.cases()`
+2. Eliminarlos directamente utilizando la función `na.omit()`
+
+Paso 1
+```{r}
+## Identificando los valores NA.
+head(complete.cases(airquality))
+head(is.na(airquality))
+
+sum(complete.cases(airquality))
+nrow(airquality)
+sum(is.na(airquality))
+sum(!is.na(airquality))
+
+## eliminando los valores NA de una tabla o matriz
+head(airquality[complete.cases(airquality),],10)
+### !is.na sólo funciona con vectores
+head(airquality$Solar.R[is.na(!airquality$Solar.R)])
+
+## O bien con la función na.omit
+head(na.omit(airquality))
+```
+
+
+## 8. Estructuras básicas de Control
+Cuando queremos establecer un programa dentro de R (escribir un código para que haga algo), existen ciertas estructuras que nos ayudan a controlar este flujo. Estas expresiones no se escriben dentro de un comando o función, al contrario, las funciones se escriben dentro de estas estructuras o cuando nosotros creamos una función.
+
+### if else
+Nos ayuda a establecer y evaluar condiciones de tipo lógico, si la condición es verdadera, entonces el programa hace algo. *if* evalua una condición inicial, si esta condición es falsa, entonces *else* hace otra cosa. Es decir, si(*if*) tengo una condición A que es verdadera, ocurre algo, de otro modo (*else*) si A es falsa, ocurre otra cosa.
+
+```{r}
+x <- 11
+
+if (x>=10){
+        y <- 1+1
+}else{
+        y <- 1+2
+                }
+y
+
+if (x<10){
+     y <- 1+1
+}
+
+```
+
+### Bucle for
+Es el operador para bucles más común. La idea es tener un indice de búcle **i** (podemos tener más de un índice de blucle j,l,k,etc.). que cubre una secuencia de números enteros (integrer), números específicos, etc.
+```{r}
+x <- vector("numeric", 20)
+for (i in 1:20) {
+     x[i] <- NA
+}
+x
+```
+
+Se pueden anidar los bucles for. Por ejemplo entre filas y columnasde una tabla.
+
+```{r}
+x <- matrix(1:15, 5, 3)
+x
+
+for (i in seq_len(nrow(x))) {
+     for (j in seq_len(ncol(x))) {
+          print(x[i,j])
+     }
+}
+x
+```
+### bucle while
+Toma una expresión lógica y ejecuta un loop (búcle) basado en el valor de esa expresión lógica. Si la condición es verdadera se ejecuta el loop, una ve ejecutada, la condición es evaluada de nuevo, si es cierta, se vuelve a repetir el loop. podemos tener más de una condición dentro del bucle while
+```{r}
+x <- 5
+while (x>3 & x<10) {
+     x <- x+.5
+}
+x
+```
+En esta condición el loop se detiene cuando alguna de las dos condiciones establecidas dejan de ser verdaderas, es decir, cuando X llega a 3 o llega a 10 el loop se detiene.
+
+Hay que tener cuidado porque podemos crear un loop infinito.
+
+### next break y return 
+Interrumpen el flujo de un programa. Por ejemplo si tenemos un código y dentro de ese código hay un loop y dentro de ese loop tenemos una condición que dé como resultado break, Next o Return, lo que harán será romper el loop y pasar a la siguiente parte del código. 
