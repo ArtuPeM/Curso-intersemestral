@@ -8,5 +8,5 @@ Para descargar los archivos html:
 
 1. Hacer click en el archivo html. 
 2. En la esquina superior derecha de la ventana del código aparece un boton que dice `Raw`. Hacer click.
-3. Se abrirá una ventana en el navegador web en donde aparecerá todo el código fuente. Aquí tendrán que guardar el archivo en su computadora como si estuvieran guardando una página web en su computadora utilizando las opciones de su navegador (chrome, mozilla, internet explorer, etc.)
+3. Se abrirá una ventana en el navegador web en donde aparecerá todo el código fuente. Aquí tendrán que guardar el archivo en su computadora como si estuvieran guardando una página web utilizando las opciones de su navegador (chrome, mozilla, internet explorer, etc.)
 4. Una vez guardado, al abrir el archivo `.html` utilizando el navegador web de su preferencia podrán ver el contenido del documento. 
