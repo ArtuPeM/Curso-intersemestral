@@ -3,9 +3,9 @@ title: "Introducción a R"
 author: "Arturo Pérez"
 date: "29/1/2021"
 output:
-        pdf_document:
-                keep_md: true
-        
+  html_document:
+    keep_md: yes
+ 
 ---
 ## 1. Conociendo la interfaz
 1. Editor de código fuente

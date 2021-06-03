@@ -2,7 +2,7 @@
 title: "Estadística Inferencial con R"
 author: "Arturo Pérez"
 output:
-        pdf_document:
+        html_document:
                 keep_md: true
 ---
 ## 1. Prueba t de student
