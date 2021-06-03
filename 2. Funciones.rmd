@@ -105,7 +105,7 @@ f <- function(a,b=1,c=2,d=NULL){}
 ### Evaluación perezosa
 
 Implica que los argumentos de una función serán evaluados sólo si se necesitan. 
-```{r}
+```{r eval=FALSE}
 f <- function(a, b){
      a^2
 }
@@ -166,13 +166,13 @@ library(rafalib)
 
 
 Sin miedo al éxito nosotros podemos nombrar un objeto llamado **sd** y al mismo tiempo una función que se llame **sd()** y uno no interferirá con el funcionamiento del otro.
-```{r}
+```{r eval=FALSE}
 mean <- function(mean, otro){
      y <- otro+mean
      mean(y)
 }
 
-desviacion(4,5)
+mean(4,5)
 ```
 
 

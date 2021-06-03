@@ -1,0 +1,512 @@
+mapply(rep, 1:4, 4:1, SIMPLIFY = FALSE)
+mapply(rep, 1:4, 4:1)
+## Respuestas
+a <- data.frame(columna1 = 1:10,variable2 = c(rep(c("grupo1","grupo2"), each =5)))
+a
+## Respuestas
+a <- data.frame(columna1 = 1:10,variable2 = rep(c("grupo1","grupo2"), each =5))
+a
+y <- c(rep(c("grupo1", "grupo2"), each = 5))
+x <- data.frame(variable1 = 1:10,
+variable2 = c(y))
+x
+data.frame(variable1=1:10, Variable2=1:10)
+x=factor(x, labels = c("grupo1", "grupo2"))
+data.frame(variable1=1:10, Variable2=1:10)
+x <- data.frame(variable1=1:10, Variable2=1:10)
+x=factor(x, labels = c("grupo1", "grupo2"))
+x$Variable2=factor(x$Variable2, labels = c("grupo1", "grupo2"))
+x$Variable2=factor(x$Variable2, labels = rep("grupo1", "grupo2", each=5))
+x$Variable2=factor(x$Variable2, levels= c(1,2)labels = rep("grupo1", "grupo2", each=5))
+x$Variable2=factor(x$Variable2, levels= c(1,2),labels = rep("grupo1", "grupo2", each=5))
+x
+x <- data.frame(variable1=1:10, Variable2=1:10)
+x$Variable2=factor(x$Variable2, levels= c(1,2),labels = rep("grupo1", "grupo2", each=5))
+x$Variable2=factor(x$Variable2,labels = rep("grupo1", "grupo2", each=5))
+x <- data.frame(variable1=1:10, Variable2=1:10)
+x$Variable2=factor(x$Variable2,labels = rep("grupo1", "grupo2", each=5))
+##hospitalizados link 2
+URL4 <- "https://datos.cdmx.gob.mx/dataset/b0d4230e-f37b-463e-8c16-3565aa78cbfc/resource/8b29f1ab-6245-42f1-878b-78e9a4b02374/download/personas_hospitalizadas_con_diagnostico_covid19-series_totales.csv"
+download.file(URL4, destfile = "./data/covid19CDMXhospitalizados.csv")
+hospitalizados <- read.csv("./data/covid19CDMXhospitalizados.csv")
+hospitalizados <- hospitalizados[hospitalizados$aÃ.o==2020,]
+names(hospitalizados)
+#24
+hospitalizados[150,7]
+soyunafuncion <- function(x,y){
+x+y
+}
+soyunafuncion(10000, 40000)
+soyunafuncion <- function(x,y=10){
+result <- x+y
+print(result)
+}
+soyunafuncion(10)
+soyunafuncion <- function(x,y=10){
+result <- x+y
+}
+soyunafuncion(10)
+soyunafuncion <- function(x,y=10){
+result <- x+y
+result
+}
+soyunafuncion(10)
+formals(rnorm)
+str(rnorm)
+rnorm(70)
+mean(rnorm(70))
+rnorm(70, mean = 3, sd=6)
+## por posición
+set.seed(1)
+rnorm(5, 3, 2)
+##por nombre
+set.seed(1)
+rnorm(n=5, mean = 3, sd = 2)
+rnorm(mean = 3, 5,2)
+##No recomendado invertir el orden de los args.
+set.seed(1)
+rnorm(mean = 3, 5,2)
+##equivalentes
+str(lm)
+rnorm(10, m = 4,  1)
+set.seed(1)
+rnorm(10, m = 4,  1)
+f <- function(a, b){
+a^2
+}
+f(2)
+##Sin embargo
+f <- function(a, b){
+x <- a^2
+y <- b^3
+return(x, y)
+}
+f(2)
+f(2,4)
+##Sin embargo
+f <- function(a, b){
+x <- a^2
+y <- b^3
+return(x, y)
+}
+f(2,6)
+##Sin embargo
+f <- function(a, b){
+x <- a^2
+y <- b^3
+print(x, y)
+}
+f(2,6)
+##Sin embargo
+f <- function(a, b){
+x <- a^2
+y <- b^3
+c(x,y)
+}
+f(2,6)
+f(2)
+f(2,7)
+fun <- function(x, y, ...){
+plot(x,y, ...)
+}
+str(fun)
+?plot
+fun(40, 80, type = "l")
+?kmeans
+args(data.frame)
+data.frame(x=1:10, y=4:14, v=5:15)
+data.frame(x=1:11, y=4:14, v=5:15)
+data.frame(x=1:11, y=4:14, v=5:15)
+args(rbind)
+args(paste)
+paste("a", "b", "c", sep = ":")
+paste("a", "b", "c", se = ":")
+lm <- function(x){x+x}
+library(rafalib)
+sd(rnorm(1000))
+sd <- sd(rnorm(1000))
+f <- sd(rnorm(1000))
+sd <- sd(rnorm(1000))
+desviacion <- function(mean, otro){
+y <- otro+mean
+mean(y)
+}
+desviacion(4,5)
+mean <- function(mean, otro){
+y <- otro+mean
+mean(y)
+}
+remove(mean())
+remove(mean
+remove(mean)
+remove(mean)
+makepower <- function(n){
+pow <- function(x){
+x^n
+}
+pow
+}
+cube <- makepower(3)
+cube(2)
+f <- function(x){ ##ambito léxico
+y <- 2
+y^2+g
+}
+g <- function(x){ ##ámbito dinámico
+x*y
+}
+makepower(3)
+cube(2)
+square <- makepower(2)
+square(4)
+as.list(na.omit(airquality))
+lapply(as.list(na.omit(airquality)), quantile)
+srt(quantile)
+str(quantile)
+?quantile
+lapply(as.list(na.omit(airquality)), quantile, probs=c(.5,.90))
+quantile(airquality$Ozone, probs = c(.4,.2))
+quantile(na.omit(airquality$Ozone), probs = c(.4,.2))
+sapply(as.list(na.omit(airquality)), quantile, probs=c(.5,.90))
+sapply(as.list(na.omit(airquality)), quantile, probs=c(.5,.90), simplify = FALSE)
+sapply(as.list(na.omit(airquality)), quantile, probs=c(.5,.90))
+data <- na.omit(airquality)
+apply(data, 2, sd)
+apply(data, 1, sd)
+apply(data, c(1,2), sd)
+apply(data,2, quantile)
+rep(c(3,5), 8)
+rep(c(3,5), each=8)
+mapply(rep, 1:4, 4:1)
+rep(1, each=4)
+rep(2, each=3)
+rep(3, each=2)
+rep(4, each=1)
+rep(1:4, each=4:1)
+ruido <- function(n, mean, sd){
+rnorm(n, mean, sd)
+}
+1:5
+ruido(1:5,1:5,2)
+mapply(ruido, 1:5, 1:5, 2)
+tapply(data$Temp, factor(data$Month), mean)
+split(data, factor(data$Month))
+split(data$Ozone, factor(data$Month))
+sapply(S, quantile)
+S <- split(data$Ozone, factor(data$Month))
+sapply(S, quantile)
+split(as.matrix(data), factor(data$Month))
+split(data$Wind, factor(data$Month))
+S <- split(airquality, airquality$Month)
+split(airquality, airquality$Month)
+split(airquality, airquality$Month)
+split(airquality, factor(airquality$Month))
+factor(airquality$Month)
+split(airquality, factor(airquality$Month, labels = c("mayo", "junio", "julio", "agosto", "septiembre", "octubre")))
+split(airquality, factor(airquality$Month, labels = c("mayo", "junio", "julio", "agosto", "septiembre")))
+x <- split(airquality, factor(airquality$Month, labels = c("mayo", "junio", "julio", "agosto", "septiembre")))
+sapply(x, mean)
+sapply(x, colMeans)
+x <- split(data, factor(data$Month,
+labels = c("mayo", "junio", "julio", "agosto", "septiembre")))
+sapply(x, colMeans)
+tapply(data$Temp, factor(data$Month), mean)
+lapply(x, mean)
+lapply(x, mean)
+lapply(x, colMeans)
+function (x, na.rm = FALSE, dims = 1L)
+sapply(x, colMeans)
+sapply(x, colMeans)
+lapply(x, colMeans)
+splitdata <- split(data, factor(data$Month,
+labels = c("mayo", "junio", "julio", "agosto", "septiembre")))
+names(data)
+lapply(splitdata, function(x) colMeans(x[,c("Ozone", "Wind", "Temp")]))
+splitdata[c("mayo", "junio", "julio")]
+splitdata[c("mayo", "junio", "julio")]
+lapply(splitdata[c("mayo", "junio", "julio")], function(x) colMeans(x[,c("Ozone", "Wind", "Temp")]))
+##hospitalizados link 2
+URL4 <- "https://datos.cdmx.gob.mx/dataset/b0d4230e-f37b-463e-8c16-3565aa78cbfc/resource/8b29f1ab-6245-42f1-878b-78e9a4b02374/download/personas_hospitalizadas_con_diagnostico_covid19-series_totales.csv"
+##hospitalizados link 2
+URL4 <- "https://datos.cdmx.gob.mx/dataset/b0d4230e-f37b-463e-8c16-3565aa78cbfc/resource/8b29f1ab-6245-42f1-878b-78e9a4b02374/download/personas_hospitalizadas_con_diagnostico_covid19-series_totales.csv"
+download.file(URL4, destfile = "./data/covid19CDMXhospitalizados.csv")
+hospitalizados <- read.csv("./data/covid19CDMXhospitalizados.csv")
+hospitalizados <- hospitalizados[hospitalizados$aÃ.o==2020,]
+#24
+hospitalizados[150,7]
+#25
+mean(hospitalizados$hospitalizados_totales_cdmx)
+#25
+mean(hospitalizados[,"hospitalizados_totales_cdmx"])
+#25
+mean(hospitalizados$hospitalizados_totales_cdmx)
+hospitalizados[hospitalizados$mes=="diciembre", "hospitalizados_totales_cdmx"]
+#26
+mean(hospitalizados[hospitalizados$mes=="diciembre", "hospitalizados_totales_cdmx"])
+if (x >= 1){y <- 2+x} else{y<-2*x}
+## estructuas basicas de control
+#27
+x <- 0
+## estructuas basicas de control
+#27
+x <- 1
+rbinom(1,1,.5)
+rbinom(1,1,.5)
+rbinom(1,1,.5)
+rbinom(1,1,.5)
+rbinom(1,1,.5)
+rbinom(1,1,.5)
+rbinom(1,1,.5)
+rbinom(1,1,.5)
+rbinom(1,1,.5)
+rbinom(1,1,.5)
+rbinom(1,1,.5)
+rbinom(1,1,.5)
+rbinom(1,1,.5)
+rbinom(1,1,.5)
+rbinom(1,1,.5)
+rbinom(1,1,.5)
+rbinom(1,1,.5)
+rbinom(1,1,.5)
+#28
+x <- vector("numeric", 1000)
+for (i in 1:1000) {
+y <- rbinom(1,1,.5)
+if (y >= 1){x[i] <- 2+y} else{x[i]<-2*y}
+}
+x
+dimnames(airquality)
+names(airquality)
+colnames(airquality)
+dir.create(cuestionarios)
+dir.create("./cuestionarios")
+Data <- xlsx::read.xlsx("./data/Experimento 1.xlsx")
+Data <- xlsx::read.xlsx("./data/Experimento 1.xlsx", sheetIndex = 1, header = TRUE, skip=3)
+Data <- xlsx::read.xlsx("./data/Experimento 1.xlsx", sheetIndex = 1, header = TRUE, skip=3)
+names(Data)
+head(Data)
+head(Data)
+Data <- xlsx::read.xlsx("./data/Experimento 1.xlsx", sheetIndex = 1, header = TRUE, skip=4, na.strings="NaN")
+head(Data)
+head(Data)
+Data <- xlsx::read.xlsx("./data/Experimento 1.xlsx", sheetIndex = 1, header = TRUE, skip=3, colIndex = 1:15)
+Data <- xlsx::read.xlsx("./data/Experimento 1.xlsx", sheetIndex = 1, header = TRUE, skip=3, colIndex = 1:15)
+head(Data)
+names(Data)
+Data <- xlsx::read.xlsx("./data/Experimento 1.xlsx", sheetIndex = 1, colIndex = 1:15)
+Data <- xlsx::read.xlsx("./data/Experimento 1.xlsx", sheetIndex = 1, colIndex = 1:15)
+head(Data)
+Data <- xlsx::read.xlsx("./data/Experimento 1.xlsx", sheetIndex = 1, colIndex = 1:15, startRow = 4)
+head(Data)
+head(Data)
+Data <- xlsx::read.xlsx("./data/Experimento 1.xlsx", sheetIndex = 1, colIndex = 1:15, startRow = 4, header = TRUE)
+head(Data)
+Data <- Data[, c("Count", "Total.Area", "Circularity", "Solidity")]
+rownames(Data)
+Data <- xlsx::read.xlsx("./data/Experimento 1.xlsx", sheetIndex = 1, colIndex = 1:15, startRow = 4, header = TRUE)
+names(Data)
+Data <- Data[, c("Slice", "Count", "Total.Area", "Circularity", "Solidity")]
+boxplot(Count~Slice, data = Data)
+boxplot(Count~Slice, data = Data)
+Data$Slice
+grepl("FBS", Data$Slice)
+Data[grepl("FBS", Data$Slice),]
+Data[grepl("FBS", Data$Slice),]
+head(Data)
+Data[grepl("QA", Data$Slice),]
+boxplot(Data[grepl("FBS", Data$Slice),"Count"])
+boxplot(Data[grepl("FBS", Data$Slice),"Count"])
+boxplot(c(Data[grepl("FBS", Data$Slice),"Count"],Data[grepl("QA", Data$Slice),"Count"]))
+boxplot(Data[grepl("FBS", Data$Slice),"Count"], Data[grepl("QA", Data$Slice),])
+boxplot(Data[grepl("FBS", Data$Slice),"Count"],Data[grepl("QA", Data$Slice),"Count"] )
+ctrl <- xlsx::read.xlsx("./data/Experimento 1.xlsx", sheetIndex = 1, colIndex = 1:15, startRow = 4, header = TRUE)
+ctrl <- Data[, c("Slice", "Count", "Total.Area", "Circularity", "Solidity")]
+ctrl <- ctrl[, c("Slice", "Count", "Total.Area", "Circularity", "Solidity")]
+exp <- xlsx::read.xlsx(("./data/Experimento 1.xlsx", sheetIndex = 2, colIndex = 1:15, startRow = 4, header = TRUE))
+exp <- xlsx::read.xlsx("./data/Experimento 1.xlsx", sheetIndex = 2, colIndex = 1:15, startRow = 4, header = TRUE)
+exp <- exp[, c("Slice", "Count", "Total.Area", "Circularity", "Solidity")]
+boxplot(ctrl[grepl("FBS", Data$Slice),], exp[grepl("FBS", Data$Slice),])
+boxplot(ctrl[grepl("FBS", ctrl$Slice),], exp[grepl("FBS", exp$Slice),])
+boxplot(ctrl[grepl("FBS", ctrl$Slice), "Count"], exp[grepl("FBS", exp$Slice),"Count"])
+boxplot(ctrl[grepl("FBS", ctrl$Slice), "Count"], exp[grepl("FBS", exp$Slice),"Count"])
+boxplot(ctrl[grepl("FBS", ctrl$Slice), "Total.Area"], exp[grepl("FBS", exp$Slice),"Total.Area"])
+boxplot(ctrl[grepl("FBS", ctrl$Slice), "Circularity"], exp[grepl("FBS", exp$Slice),"Circularity"])
+boxplot(ctrl[grepl("FBS", ctrl$Slice), "Circularity"], exp[grepl("FBS", exp$Slice),"Circularity"])
+boxplot(ctrl[grepl("FBS", ctrl$Slice), "Solidity"], exp[grepl("FBS", exp$Slice),"Solidity"])
+exp$Solidity
+class(exp$Solidity)
+as.numeric(exp$Solidity)
+as.numeric(exp[,c("Solidity", "Circularity")])
+exp$Total.Area
+exp$Circularity <- as.numeric(exp$Circularity)
+exp$Solidity <- as.numeric(exp$Solidity)
+ctrl$Circularity <- as.numeric(ctrl$Circularity)
+ctrl$Solidity <- as.numeric(ctrl$Solidity)
+boxplot(ctrl[grepl("FBS", ctrl$Slice), "Solidity"], exp[grepl("FBS", exp$Slice),"Solidity"])
+boxplot(ctrl[grepl("FBS", ctrl$Slice), "Circularity"], exp[grepl("FBS", exp$Slice),"Circularity"])
+boxplot(ctrl[grepl("FBS", ctrl$Slice), "Circularity"], exp[grepl("FBS", exp$Slice),"Solidity"])
+boxplot(ctrl[grepl("FBS", ctrl$Slice), "Circularity"], exp[grepl("FBS", exp$Slice),"Total.Area"])
+boxplot(ctrl[grepl("FBS", ctrl$Slice), "Total.Area"], exp[grepl("FBS", exp$Slice),"Total.Area"])
+boxplot(ctrl[grepl("FBS", ctrl$Slice), "Total.Area"], exp[grepl("FBS", exp$Slice),"Count"])
+boxplot(ctrl[grepl("FBS", ctrl$Slice), "Count"], exp[grepl("FBS", exp$Slice),"Count"])
+boxplot(ctrl[grepl("FBS", ctrl$Slice), "Count"], exp[grepl("FBS", exp$Slice),"Count"])
+boxplot(ctrl[grepl("FBS", ctrl$Slice), "Count"],
+exp[grepl("FBS", exp$Slice),"Count"]+5)
+boxplot(ctrl[grepl("FBS", ctrl$Slice), "Count"],
+exp[grepl("FBS", exp$Slice),"Count"]+20)
+boxplot(ctrl[grepl("FBS", ctrl$Slice), "Count"],
+exp[grepl("FBS", exp$Slice),"Count"]+70)
+boxplot(ctrl[grepl("FBS", ctrl$Slice), "Count"],
+exp[grepl("FBS", exp$Slice),"Count"]+100)
+boxplot(ctrl[grepl("FBS", ctrl$Slice), "Count"]+80,
+exp[grepl("FBS", exp$Slice),"Count"])
+control <- ctrl[grepl("FBS", ctrl$Slice)
+boxplot(, "Count"], exp[grepl("FBS", exp$Slice),"Count"])
+control <- ctrl[grepl("FBS", ctrl$Slice), "Count"]
+experimental <- exp[grepl("FBS", exp$Slice),"Count"]
+boxplot(control, experimental)
+boxplot(control, experimental)
+length(control)
+factor(rep(1,2, each = 20), levels = c(1, 2), labels = c("control", "experimental"))
+factor(rep(1,2, each = 20), labels = c("control", "experimental"))
+factor(rep(1,2, each = 20),levels = c("control", "experimental"), labels = c("control", "experimental"))
+rep(1,2, each = 20)
+factor(rep(c(1,2), each = 20),levels = c(1,2), labels = c("control", "experimental"))
+grupos <- factor(rep(c(1,2), each = 20),levels = c(1,2), labels = c("control", "experimental"))
+Data <- rbind(control, experimental, grupos)
+Data <- as.data.frame(rbind(control, experimental, grupos))
+Data <- as.data.frame(cbind(control, experimental, grupos))
+boxplot(Data)
+boxplot(Data)
+Data <- as.data.frame(cbind(control, experimental))
+Data <- paste(control, experimental)
+Data
+Data <- c(control, experimental)
+cbind(Data, grupos)
+as.data.frame(cbind(Data, grupos))
+as.data.frame(cbind(Data, grupos))
+Data <- as.data.frame(cbind(Data, grupos))
+Data <- c(control, experimental)
+Data <- data.frame(Data, grupos)
+colnames(Data) <- c("Observaciones", "Grupo")
+boxplot(Observaciones~Grupo, data = Data)
+boxplot(Observaciones~Grupo, data = Data)
+boxplot(Observaciones~Grupo, data = Data)
+colnames(Data) <- c("Conteos", "Grupo")
+boxplot(Conteos~Grupo, data = Data)
+boxplot(Conteos~Grupo, data = Data)
+colnames(Data) <- c("Conteos linea base", "Grupo")
+boxplot(Conteos linea base~Grupo, data = Data)
+boxplot("Conteos linea base"~Grupo, data = Data)
+boxplot(Data$`Conteos linea base`~ Data$Grupo)
+boxplot(Data$`Conteos linea base`~ Data$Grupo, ylab = "Conteos línea base")
+boxplot(Data$`Conteos linea base`~ Data$Grupo,
+ylab = "Conteos línea base")
+Data$ConteosPostTratamiento[,21:40] <- Data$`Conteos linea base`[,21:40]+80
+Data$ConteosPostTratamiento[21:40,] <- Data$`Conteos linea base`[21:40,]+80
+Data$ConteosPostTratamiento <-Data$`Conteos linea base`
+Data$ConteosPostTratamiento[21:40,] <- Data$ConteosPostTratamiento[21:40,]+80
+Data$ConteosPostTratamiento[21:40,]
+Data$ConteosPostTratamiento[21:40] <- Data$ConteosPostTratamiento[21:40]+80
+boxplot(Data$ConteosPostTratamiento~ Data$Grupo,
+ylab = "Conteos línea base")
+boxplot(Data$ConteosPostTratamiento~ Data$Grupo,
+ylab = "Conteos línea base")
+boxplot(Data$ConteosPostTratamiento~ Data$Grupo,
+ylab = "Conteos post tratamiento")
+par(mfrow=c(2,1))
+par(mfrow=c(2,1))
+boxplot(Data$`Conteos linea base`~ Data$Grupo,
+ylab = "Conteos línea base")
+boxplot(Data$ConteosPostTratamiento~ Data$Grupo,
+ylab = "Conteos post tratamiento")
+par(mfrow=c(1,2))
+boxplot(Data$`Conteos linea base`~ Data$Grupo,
+ylab = "Conteos línea base")
+boxplot(Data$ConteosPostTratamiento~ Data$Grupo,
+ylab = "Conteos post tratamiento")
+boxplot(Data$`Conteos linea base`~ Data$Grupo,
+ylab = "Conteos línea base", main= "Principio 1")
+boxplot(Data$ConteosPostTratamiento~ Data$Grupo,
+ylab = "Conteos post tratamiento", main="Principio 2")
+data.frame(variable1=1:10,variable2=1:10) rownames(x) <- c(1:10) colnames(x) <- c("variable1","variable2")
+data.frame(variable1=1:10,variable2=1:10); rownames(x) <- c(1:10) colnames(x) <- c("variable1","variable2")
+data.frame(columna1 = 1:10,variable2 = rep(c("grupo1","grupo2"), each =5))
+hospitalizados <- read.csv("./data/covid19CDMXhospitalizados.csv")
+#21
+ncol(hospitalizados)
+#22
+nrow(hospitalizados)
+#24
+hospitalizados[150,7]
+#22
+nrow(hospitalizados)
+#24
+hospitalizados[150,7]
+hospitalizados <- hospitalizados[hospitalizados$aÃ.o==2020,]
+#24
+hospitalizados[150,7]
+download.file(URL4, destfile = "./data/covid19CDMXhospitalizados.csv")
+##RESPUESTAS DE LA SECCIÓN DOS DEL CUESTIONARIO 1
+##hospitalizados link 2
+URL <- "https://datos.cdmx.gob.mx/dataset/b0d4230e-f37b-463e-8c16-3565aa78cbfc/resource/8b29f1ab-6245-42f1-878b-78e9a4b02374/download/personas_hospitalizadas_con_diagnostico_covid19-series_totales.csv"
+download.file(URL4, destfile = "./data/covid19CDMXhospitalizados.csv")
+download.file(URL4, destfile = "./data/covid19CDMXhospitalizados.csv")
+##RESPUESTAS DE LA SECCIÓN DOS DEL CUESTIONARIO 1
+##hospitalizados link 2
+URL <- "https://datos.cdmx.gob.mx/dataset/b0d4230e-f37b-463e-8c16-3565aa78cbfc/resource/8b29f1ab-6245-42f1-878b-78e9a4b02374/download/personas_hospitalizadas_con_diagnostico_covid19-series_totales.csv"
+download.file(URL4, destfile = "./data/covid19CDMXhospitalizados.csv")
+##RESPUESTAS DE LA SECCIÓN DOS DEL CUESTIONARIO 1
+##hospitalizados link 2
+URL <- "https://datos.cdmx.gob.mx/dataset/b0d4230e-f37b-463e-8c16-3565aa78cbfc/resource/8b29f1ab-6245-42f1-878b-78e9a4b02374/download/personas_hospitalizadas_con_diagnostico_covid19-series_totales.csv"
+download.file(URL4, destfile = "./data/covid19CDMXhospitalizados.csv")
+download.file(URL, destfile = "./data/covid19CDMXhospitalizados.csv")
+hospitalizados <- read.csv("./data/covid19CDMXhospitalizados.csv")
+#24
+hospitalizados[150,7]
+hospitalizados <- hospitalizados[hospitalizados$aÃ.o==2020,]
+#24
+hospitalizados[150,7]
+hospitalizados <- read.csv("./data/covid19CDMXhospitalizados.csv")
+#25
+mean(hospitalizados$hospitalizados_totales_cdmx)
+#26
+mean(hospitalizados[hospitalizados$mes=="diciembre", "hospitalizados_totales_cdmx"])
+hospitalizados <- read.csv("./data/covid19CDMXhospitalizados.csv")
+#26
+mean(hospitalizados[hospitalizados$mes=="diciembre", "hospitalizados_totales_cdmx"])
+plot(airquality$Ozone, airquality$Temp)
+plot(airquality$Ozone, airquality$Temp)
+plot(airquality$Ozone, airquality$Temp, ylab = "temperatura",
+xlab = "ozono")
+abline(lm(airquality$Temp~airquality$Ozone ))
+abline(lm(airquality$Temp~airquality$Ozone), col=red)
+abline(lm(airquality$Temp~airquality$Ozone), col="red")
+plot(airquality$Ozone, airquality$Temp, ylab = "temperatura",
+xlab = "ozono", pch=20)
+abline(lm(airquality$Temp~airquality$Ozone), col="red")
+x <- factor(airquality, labels = c("marzo", "abril", "mayo", "junio", "julio", "agosto"))
+lattice::xyplot(airquality$Temp~airquality$Ozone|x)
+lattice::xyplot(airquality$Temp~airquality$Ozone|x, layout=c(2,1))
+lattice::xyplot(airquality$Temp~airquality$Ozone|x, layout=c(5,1))
+lattice::xyplot(airquality$Temp~airquality$Ozone|x, layout=c(5,1))
+lattice::xyplot(airquality$Temp~airquality$Ozone|x)
+ggplot2::qplot(airquality$Ozone, airquality$Temp, facets = .~x)
+ggplot2::qplot(airquality$Ozone, airquality$Temp, facets = .~)
+ggplot2::qplot(airquality$Ozone, airquality$Temp)
+ggplot2::qplot(airquality$Ozone, airquality$Temp, geom = c("point", "smooth"))
+ggplot2::qplot(Ozone, Temp, data = airquality, facets = x)
+ggplot2::qplot(Ozone, Temp, data = airquality, facets = x.~)
+x <- factor(airquality, labels = c("marzo", "abril", "mayo", "junio", "julio", "agosto"))
+ggplot2::qplot(Ozone, Temp, data = airquality, facets = x.~)
+x <- factor(airquality$Month, labels = c("marzo", "abril", "mayo", "junio", "julio", "agosto"))
+airquality$Month
+x <- factor(airquality$Month, labels = c("marzo", "abril", "mayo", "junio", "julio"))
+ggplot2::qplot(Ozone, Temp, data = airquality, facets = x.~)
+ggplot2::qplot(Ozone, Temp, data = airquality, facets = x~.)
+ggplot2::qplot(Ozone, Temp, data = airquality, facets = .~x)
+ggplot2::qplot(Ozone, Temp, data = airquality, facets = .~x)
+plot(x, airquality$Ozone)
+ggplot2::qplot(Ozone, Temp, data = airquality, facets = .~Month)
+library(ggplot2)
+install.packages("ggplot2")

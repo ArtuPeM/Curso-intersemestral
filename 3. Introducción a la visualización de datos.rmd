@@ -1,0 +1,191 @@
+---
+title: "Introducción a la visualización de datos"
+author: "Arturo Pérez"
+output: pdf_document
+---
+## 1. Principios de las gráficas de análisis
+### Mostrar comparaciones.
+La evidencia de una hipótesis siempre es relativa si no tenemos un punto de comparación. Es decir, siempre hay que mostrar un contraste de condiciones (p.e Control y experimental)
+
+### Mostrar causalidad, mecanismos, estructura sistemática.
+Es básicamente cómo creo que se comporta el fenómeno
+
+```{r echo = FALSE}
+ctrl <- xlsx::read.xlsx("./data/Experimento 1.xlsx", sheetIndex = 1, colIndex = 1:15, startRow = 4, header = TRUE)
+ctrl <- ctrl[, c("Slice", "Count", "Total.Area", "Circularity", "Solidity")]
+ctrl$Circularity <- as.numeric(ctrl$Circularity)
+ctrl$Solidity <- as.numeric(ctrl$Solidity)
+
+exp <- xlsx::read.xlsx("./data/Experimento 1.xlsx", sheetIndex = 2, colIndex = 1:15, startRow = 4, header = TRUE)
+exp <- exp[, c("Slice", "Count", "Total.Area", "Circularity", "Solidity")]
+exp$Circularity <- as.numeric(exp$Circularity)
+exp$Solidity <- as.numeric(exp$Solidity)
+
+control <- ctrl[grepl("FBS", ctrl$Slice), "Count"]
+experimental <- exp[grepl("FBS", exp$Slice),"Count"]
+grupos <- factor(rep(c(1,2), each = 20),levels = c(1,2), labels = c("control", "experimental"))
+Data <- c(control, experimental)
+Data <- data.frame(Data, grupos)
+colnames(Data) <- c("Conteos linea base", "Grupo")
+
+par(mfrow=c(1,2), mar=c(4,4,2,2))
+boxplot(Data$`Conteos linea base`~ Data$Grupo, 
+        ylab = "Conteos línea base", main="Principio 1",
+        xlab = "")
+
+Data$ConteosPostTratamiento <-Data$`Conteos linea base` 
+Data$ConteosPostTratamiento[21:40] <- Data$ConteosPostTratamiento[21:40]+80
+boxplot(Data$ConteosPostTratamiento~ Data$Grupo, 
+        ylab = "Conteos post tratamiento", main = "principio 2",
+        xlab = "")
+
+
+```
+
+### Mostrar datos multivariados
+Mostrar más de dos variables. El mundo real es multivariado.
+
+```{r echo=FALSE}
+plot(airquality$Ozone, airquality$Temp)
+abline(lm(airquality$Temp~airquality$Ozone), col="red")
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+airquality <- na.omit(airquality)
+library(ggplot2)
+qplot(Ozone, Temp, data = airquality, facets = .~Month) + geom_smooth(method = lm, se=FALSE)
+```
+
+## 2. Diagramas de cajas y bigotes
+
+```{r}
+boxplot(airquality$Ozone, airquality$Solar.R)
+airquality$Month <- factor(airquality$Month,
+                           labels = c("Mayo", "Junio", "Julio", "Agosto", "Septiembre"))
+boxplot(Ozone~Month, data = airquality)
+```
+
+## 3. Histograma
+```{r}
+hist(rnorm(10000))
+```
+
+## 4. Gráfica de barras
+```{r, warning=FALSE, message=FALSE}
+estatus <- read.csv("./covid/capacidadcovid19CDMX.csv")
+barplot(table(estatus$Estatus_capacidad_hospitalaria[estatus$Estatus_capacidad_hospitalaria==c("BUENA", 
+                                                                                               "MEDIA")]),
+        main = "estatus", ylab = "no de hospitales")
+```
+
+## 5. Diagramas de dispersión
+```{r}
+plot(control, experimental)
+```
+
+De acuerdo al tipo de variable que vayamos a graficar podemos obtener un diagrama de dispersión o un boxplot (cuando hay variables categóricas).
+```{r}
+plot(airquality$Month,airquality$Wind)
+plot(airquality$Wind~airquality$Month)
+```
+
+## 6. Funciones de graficado.
+```{r}
+#lines
+plot(airquality$Wind,airquality$Ozone, type = "n")
+lines(airquality$Wind,airquality$Ozone)
+
+##cuando quiero líneas de un solo subset
+plot(airquality$Wind,airquality$Ozone, type = "n")
+with(subset(airquality, Month=="Mayo"),lines(Wind, Ozone)) 
+
+#abline
+plot(airquality$Wind,airquality$Ozone)
+abline(v=max(airquality$Wind))
+
+hist(rnorm(10000))
+abline(v=c(-1,1))
+
+#points
+plot(airquality$Ozone, airquality$Wind, type = "n")
+points(airquality$Ozone, airquality$Wind)
+##sólo un grupo de puntos
+with(airquality, plot(Wind, Ozone, type="n"))
+with(subset(airquality, Month=="Mayo"), points(Wind, Ozone) )
+##meses específicos
+data <- airquality[airquality$Month %in% c("Mayo", "Agosto"),]
+plot(data$Wind, data$Ozone, type = "n")
+#puntos de agosto
+points(data[data$Month=="Agosto", "Wind"],data[data$Month=="Agosto", "Ozone"] )
+##EQUIVALENTE A LA GRAFICA ANTERIOR
+with(airquality[airquality$Month %in% c("Mayo", "Agosto"),], 
+     plot(Wind, Ozone, type = "n"))
+#puntos de agosto
+with(subset(airquality, Month == "Agosto"), points(Wind, Ozone))     
+#text
+plot(c(3,6,8,10,20), c(4,6,9,6,5), xlab = "x", ylab = "y", ylim = c(0,10))
+text(c(3,6,8,10,20), c(4,6,9,6,5)+.7, labels = c("sj1", "sj2", "sj3", "sj4", "sj5"))
+
+##title
+boxplot(Ozone~Month, data = airquality, ylab = "", xlab = "")
+title(main = "Calidad del aire", xlab = "Meses", ylab = "Ozono")
+
+##mtext
+boxplot(Ozone~Month, data = airquality, main="calidad del aire", xlab = "Meses", ylab = "Ozono")
+mtext("hola que hace", 3)
+
+#Algunas funciones se pueden aplicar directamente en 
+with(airquality[airquality$Month %in% c("Mayo", "Agosto"),], 
+     plot(Wind, Ozone, main = "calidad del aire", xlab = "viento", ylab = "Ozono", type = "o" ))
+
+```
+### Características especiales dentro de una gráfica
+**pch**
+```{r}
+plot(data$Wind, data$Ozone, pch=20)
+```
+**lty**
+```{r}
+plot(data$Wind, data$Ozone, pch=20)
+abline(h=50, lty=2)
+```
+**lwd**
+```{r}
+plot(data$Wind, data$Ozone, pch=20)
+abline(h=50, lty=2, lwd=2)
+```
+**col**
+```{r}
+plot(data$Wind, data$Ozone, pch=20, col="red")
+abline(h=50, lty=2, lwd=1)
+
+plot(data$Wind, data$Ozone, type="n")
+points(data[data$Month=="Agosto", "Wind"],
+       data[data$Month=="Agosto", "Ozone"], col="blue", pch=20)
+points(data[data$Month=="Mayo", "Wind"],
+       data[data$Month=="Mayo", "Ozone"], col="red", pch=1)
+
+plot(data$Wind, data$Ozone, pch=16, col=data$Month)
+```
+
+**legend**
+```{r}
+plot(data$Wind, data$Ozone, type="n", xlab = "viento", ylab = "Ozone")
+points(data[data$Month=="Agosto", "Wind"],
+       data[data$Month=="Agosto", "Ozone"], col="blue", pch=20)
+points(data[data$Month=="Mayo", "Wind"],
+       data[data$Month=="Mayo", "Ozone"], col="red", pch=1)
+legend("topright", legend = c("Mayo", "Agosto"), pch = c(1,20), col = c("red", "blue"))
+```
+
+### Guardando una gráfica
+```{r}
+png("./plots/grafica1")
+plot(data$Wind, data$Ozone, type="n", xlab = "viento", ylab = "Ozone")
+points(data[data$Month=="Agosto", "Wind"],
+       data[data$Month=="Agosto", "Ozone"], col="blue", pch=20)
+points(data[data$Month=="Mayo", "Wind"],
+       data[data$Month=="Mayo", "Ozone"], col="red", pch=1)
+legend("topright", legend = c("Mayo", "Agosto"), pch = c(1,20), col = c("red", "blue"))
+```
+
